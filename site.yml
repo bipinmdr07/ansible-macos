@@ -1,0 +1,56 @@
+---
+- hosts: harvest
+  become: false
+  gather_facts: true
+
+  vars_files:
+    - group_vars/variable.yml
+
+  pre_tasks:
+    - name: Ensuring Homebrew is installed
+      stat:
+        path: /opt/homebrew/bin/brew
+      register: homebrew_check
+
+    - name: Fail if homebrew is not installed and install install_homebrew_if_missing is false
+      fail:
+        msg: Homebrew is missing... Install from https://brew.sh/
+      when:
+        - not homebrew_check.stat.exists
+        - not install_homebrew_if_missing
+
+    - name: Installing Homebrew
+      shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      when:
+        - not homebrew_check.stat.exists
+        - install_homebrew_if_missing
+
+    - name: Install homebrew updates and packages (casks included)
+      include_tasks: tasks/install-brew-packages.yml
+
+  tasks:
+    - name: Configuring dropbox and syncing files
+      pause:
+        prompt: Is Dropbox setuped and all files synced successfully? (y/n)
+      register: dropbox_configured
+
+    - block:
+      - name: End playbook if dropbox not configured
+        debug:
+          msg: Dropbox configuration is required to proceed futher, Exiting now...
+      - meta: end_play
+      when: dropbox_configured.user_input == "n"
+
+    # copy .ssh from dropbox to home and chmod 600
+    #
+    # clone .dotfiles manage symlink .zshrc .gitconfig
+    #
+    # Install node and mark as default
+    #
+    # Configure doom emacs, remove .doom.d from home and clone .doom.d
+    #
+    # Install global npm packages
+    #
+    # Install aws client
+    #
+    # clone work repos under workspace directory

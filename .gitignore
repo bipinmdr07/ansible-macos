@@ -1,0 +1,16 @@
+# Folder view configuration files
+.DS_Store
+Desktop.ini
+
+*.swp
+*.swo
+*.orig
+
+.\#*
+\#*
+
+tags
+tags_sorted_by_file
+*.iml
+.gemtags
+.tags

@@ -1,0 +1,38 @@
+---
+nvm_version: v0.39.2
+
+brew_cask_packages:
+  - docker
+  - dropbox
+  - firefox
+  - google-chrome
+  - google-drive
+  - iterm2
+  - macvim
+  - slack
+  - spotify
+  - visual-studio-code
+  - postman
+  - emacs
+  - vlc
+  - obs-studio
+  - zoom
+  - viber
+  - insomnia
+
+brew_packages:
+  - autoconf
+  - bash-completion
+  - docker-machine
+  - git
+  - git-extras
+  - git-lfs
+  - jq
+  - tmux
+  - tree
+  - wget
+  - zsh
+  - zsh-syntax-highlighting
+
+install_homebrew_if_missing: false
+upgrade_homebrew_packages: false
